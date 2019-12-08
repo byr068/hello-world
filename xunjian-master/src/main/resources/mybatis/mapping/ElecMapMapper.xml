@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ElecMapMapper">
+    <!--通过员工获取数据-->
+    <select id="findByW" parameterType="pd" resultType="pd">
+        select *  from latest_location
+        where
+        worker_name = #{worker_name}
+    </select>
+    <!--获取未处理异常位置-->
+    <select id="findException" parameterType="pd" resultType="pd">
+        SELECT *   FROM exception WHERE status=1
+        <if test="factory_id != null and factory_id != ''">
+            and factory_id = #{factory_id}
+        </if>
+        <if test="workshop_id != null and workshop_id != ''">
+            and workshop_id = #{workshop_id}
+        </if>
+
+    </select>
+    <!--所有员工最近位置-->
+    <select id="datalistWorker" parameterType="Page" resultType="pd" useCache="false">
+        select  *   from sys_user
+        where 1 = 1
+        <if test="pd.factory_id != null and pd.factory_id != ''">
+            and factory_id = #{pd.factory_id}
+        </if>
+        <if test="pd.workshop_id != null and pd.workshop_id != ''">
+            and workshop_id = #{pd.workshop_id}
+        </if>
+        <if test="pd.team_id != null and pd.team_id != ''">
+            and team_id = #{pd.team_id}
+        </if>
+    </select>
+
+
+
+    <select id="getPointById" parameterType="java.lang.String" resultType="com.wp.entity.map.MapPoint">
+        select longitude, latitude from worker_location  where worker_id = #{workerId}
+    </select>
+
+</mapper>
